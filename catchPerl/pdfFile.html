@@ -1,0 +1,2722 @@
+<html><head>
+<title>Chapter 1 -- Perl 概述</title>
+<meta></head>
+<body TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE" VLINK="#551A8B" ALINK="#CE2910">
+<h1><font size="6" color="#FF0000">第一章 Perl 概述</font></h1>
+<p><i><b>by Paul Doyle</b></i>翻譯：劉智漢</p>
+<hr>
+<p align="center"><font SIZE="5"><a NAME="CONTENTS"><b>目錄</b></a></font> </p>
+<ul>
+  <li><a HREF="#Perl">Perl</a> <ul>
+      <li><a HREF="#Origins">起源Origins</a> </li>
+      <li><a HREF="#Borrowings">借用的概念</a> </li>
+      <li><a HREF="#CostandLicensing">授權及費用</a> </li>
+      <li><a HREF="#Distribution">軟體散播</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#PerlPrograms">PERL 程式</a> <ul>
+      <li><a HREF="#Invocation">呼叫 Perl</a> </li>
+      <li><a HREF="#CommandLineArguments">命令列參數</a> </li>
+      <li><a HREF="#ProgramLayout">Program Layout</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#DataTypes">資料型態</a> <ul>
+      <li><a HREF="#Scalars">數值型態</a> </li>
+      <li><a HREF="#Arrays">陣列</a> </li>
+      <li><a HREF="#AssociativeArrays">陣列組合 Associative Arrays</a> </li>
+      <li><a HREF="#FileHandles">檔案處理</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#SpecialVariables">特殊變數</a> <ul>
+      <li><a HREF="#EnvironmentVariables">環境變數</a> </li>
+      <li><a HREF="#ProgramArguments">Program Arguments</a> </li>
+      <li><a HREF="#CurrentLine">Current Line</a> </li>
+      <li><a HREF="#SystemErrorMessages">系統錯誤訊息</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#FlowControl">流程控制（Flow Control）</a> <ul>
+      <li><a HREF="#LogicalOperators">邏輯運算元</a> </li>
+      <li><a HREF="#ConditionalExpressions">條件式語法表示</a> </li>
+      <li><a HREF="#CompoundStatements">複合語法</a> </li>
+      <li><a HREF="#Loops">迴圈</a> </li>
+      <li><a HREF="#Labels">Labels</a> </li>
+      <li><a HREF="#Subroutines">子程式（Subroutines）</a> </li>
+      <li><a HREF="#VariableScope">變數範圍（Variable Scope）</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#Patterns">Patterns</a> <ul>
+     <li><a HREF="#RegularExpressions">正規稱法（Regular Expressions）</a> </li>
+     <li><a HREF="#Matching">Matching</a> </li>
+     <li><a HREF="#Substitution">Substitution</a> </li>
+    </ul>
+  </li>
+  <li><a HREF="#FromHere">From Here </a></li>
+</ul>
+<hr>
+<p>當你要在 www servers 上使用 Perl 之前，你必須要花費點時間來了解 Perl 這個程式
+語言。<p>本章提供了 Perl 語言的概觀。雖然它不是 Perl 語言的核心，但也足夠去使用 
+Perl 了。就像你使用語言一樣，當你使用 Perl設計了一段時間之後，你便會想要去鑽研更
+深的東西。<br></p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>The &quot;Camel Book&quot;</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>當你準備學習更多時，你可能會想要去購買<i>Programming Perl</i>
+         這本由 Larry Wall and Randal L. Schwartz 所著的書。(O'Reilly &amp; 
+    Associates, Inc.). 本書是目前使用 Perl 最可靠的書
+      他的可讀性及幽默性到目前為止仍然有足夠的技術可供在任何 Perl 
+      的程式設計上使用。</p>
+    </blockquote>
+    <blockquote>
+    <p>由於使用一隻單峰駱駝作為封面，因此本書便有了&quot;Camel book&quot; 稱號。
+由於很多學習Perl的人使用這本書作為學習手冊，因此這隻動物已經變成了 Perl 語言的象
+徵標誌了（有點像 Linux 的企鵝）。</p>
+    </blockquote></td></tr></table></center></div>
+<p>本章節我們不會去研究太深的東西，所有深入的課題我們會在本書的第五部分來探討。
+ 本章結束之後，, 你應該知道要去哪裡找到一些特定問題的答案。 如果你對 Perl已經
+有些了解，你可以跳過本章去尋找你想要學習的部分。如果你根本就不熟悉任何一種程
+式語言，本書並不適合作為初學者學習程式語言的入門書籍。
+<h2><a NAME="Perl"><font SIZE="5" COLOR="#FF0000">Perl</font></a></h2>
+<p>根據原作者的自述，Perl 會被發展出來起因其實是因為某人過度懶惰的結果。<br>
+<div align="center"><center>
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP"><td><b>NOTE</b></td><tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>這個部分應該可以隨便帶過就可以了，為什麼我要浪費時間在這裡呢？ 事實上，
+Perl 是一種特殊的語言，他不能和一般的以技術為主程式語言來比較。我們不能只把它當
+作是一種程式語言來看。所以我們要花一些時間來研究他是如何被研發出來，為什麼要發
+展 Perl？
+</p></blockquote></td></tr></table></center></div>
+<h3>起源</h3><p>
+讓我們回到 1986年，當時有個名叫 Larry Wall 的 UNIX 程式設計師，發現到他每天都得
+和為數眾多又複雜的文件報告為伍 ，因此他開始使用 awk 來處理這些文件。不久，他發現
+到 awk 不能符合他的需求，在找不到其它合用的工具的情況下，他決定自己寫一些
+程式，來解決這些困擾他許久問題。<p>
+Larry 寫了一些公用程式來管理他工作上的特殊需求。 但是不久這些工作特性又變了，
+於是他又必須要重寫一些工具來應付新的工作需求。為了不浪費時間，他發明了新的程式語
+言，並且為這個語言寫了個直譯器。他發明的語法看起來像是 paradox，但事實上卻不然。
+<p>新的語言加強了對系統的管理及文字的處理，經過幾次改版之後，新的語言可以處理正
+規的語法，符號，以及網路通信協定。這就是現在聞名的 Perl 語言。
+
+<h3><a NAME="Borrowings">借用的概念</a></h3>
+
+<p>Perl 從其它的工具借了許多東西來使用，特別是 sed 及 awk.雖然 Perl 作的許多事情
+用sed,awk 或是 UNIX shell scripting 語言來作，都可以得到相同的結果，但是 Perl 會
+作的比較好。<br>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>NOTE</b></td>
+  </tr><tr valign=top><td><blockquote>
+<p>究竟要用大寫的 <i>Perl</i> 或是小寫的 <i>perl</i>呢？ 根據 Larry Wall 
+的定義：這根本是一件不重要的事。 但是許多程式設計師卻比較喜歡使用 Perl。通
+常 UNIX 系統上的程式都傾向於使用小寫。不管如何，選擇你喜歡的方式去稱呼他，畢竟
+Perl 是一個工具，不是教條。
+    </blockquote><blockquote><p>
+如果你想要賣弄學問，在閱讀完本章的〔正規稱法〕這個部分後，你可能會稱他
+為 <i>[Pp]erl</i>  </blockquote></td></tr></table></center></div>
+
+<p>Perl 可以將低階的東西處理的非常好，特別是 Perl 5。他有許多處理方式和 C 是相通
+的，但是 Perl 處理資料型態，記憶體配置，卻比 C 來的更自動化。<p>
+Perl 程式碼也呈現出和 C 的程式碼相似。也許這是因為 Perl 是用 C 寫成的，也可能是
+Larry 發現用 C 的語法來作表達會更容易上手。雖是如此，Perl 卻有著比 C 更簡潔的語
+法。
+
+<h3><a NAME="CostandLicensing">費用及授權</a></h3>
+
+<p>Perl 是一套免費的工具。 全部的 source 以及文件都可供人免費複製，編譯或是列印
+。當你散播軟體時你並不需要付給任何人版稅，也沒有任何的法律約束。<p>
+Perl 仍然是一個保有著作權的產品，假如原始程式碼被完全公開，某人可能就會對程式作
+少部分的修改，然後重新編譯接著便用其他的產品名稱去販賣牟利。<p>
+GNU 組織是一個可以保護散播的免費軟體被竄改牟利的組織。 在他的授權之下，原始碼可
+以被任何人免費的使用，但是任何根據原始碼所發展出來的程式也必須用同樣的方式來散
+播出去。換句話說，如果你用來發展妳程式的原始碼是在 GNU 授權之下取得的，那你也必
+須將你的原始碼給任何有需要的人。<p>
+這種方式可以提供對軟體發展有興趣的人一項充分的保護，但卻可能產生出過多的類似程
+式出來，這可能會造成喧賓奪主的情況發生。也可能會造成版本控制上的問題，可能某些
+特定的程式需要在某些特定的版本上執行，但卻用了不同的版本，如此一來，對使用者便會
+造成相當大的困擾。<p>
+這便是為什麼 Perl會在 Artistic License 這個機構下發表的原因。這個機構的理念不同
+於 GNU。Artistic License 表示如果有人使用了 Perl 的原始碼來發展他們自己的程式，
+他必須明白地表示他所發表的軟體並不是 Perl。所有更改的部分都必須明白的指出來，
+而且執行檔不能和被更改的程式同名。如果有必要的話，原始程式碼必須和更改過的程式
+一起被散播出去。這種結果會讓原作者被清楚的認同為此套軟體的原作者。
+
+<h3><a NAME="Distribution">軟體散播</a></h3><p>
+
+新版本的 Perl 可以在網路上或是各 FTP 站上找到。Perl的原始碼以及文件可以在非 UNIX
+系統上執行。UNIX 的二位元檔通常在網路上找不到，這是因為幾乎所有的 UNIX 系統都有 
+C 語言編譯器，你可以用內附的 C 編輯器在你的機器上重新組譯一次，以確保 Perl 能在
+妳的系統上執行，這種方式比在別人機器上組譯 Perl 程式後，再移到你的電腦上會好的
+多。<p>
+Perl 套件通常都會伴隨著一套稱為 Configure 的公用程式，它可以根據不同的電腦主機狀
+況自動幫你設定好原始碼以及 makefile。他會自動偵測系統內的組態，然後依據不同的狀
+況幫你把組譯 Perl 的需要訊息都設定好，當然，你也可以自行去設定這些訊息。<p>
+
+<h2><font SIZE="5" COLOR="#FF0000"><a NAME="PerlPrograms">Perl 程式設計（Perl 
+Programs）</a></font></h2>
+
+<p>當你安裝完 perl 之後，你要如何使用這個奇妙的工具來使網站更多采多姿呢？什麼是
+Perl 的程式設計？你要如何來使用它呢？ </p>
+
+<h3><a NAME="Invocation">呼叫 Perl</a></h3>
+
+<p>我們打算在本章節的最後才來回答前面的兩個問題。所以我們直接來探討第三個問題，
+使用 
+perl 是一件極簡單的事， 但是程序變數（procedure varies）卻會因為不同的系統而有些許的變化。</p>
+<p>首先假設 perl 已經正確的安裝在你的電腦上了。 執行 perl 
+的最簡單的方法就是去啟動perl 直譯器，就像下面一樣： </p>
+
+<blockquote>
+  <pre>perl sample.pl
+</pre>
+  <pre>在這個範例中，SAMPLE.PL 是 perl 檔案的名稱，而 perl 則是 perl 直譯器。</pre>
+  <pre>這個範例假設 perl 是目前的執行路徑，如果不是的話，你必須要給定 perl 的所</pre>
+  <pre>在路徑，就像下面一樣：</pre>
+  <pre> /usr/local/hin/perl sample.pl
+
+</pre>
+</blockquote>
+
+<p>這個語法是執行 perl 
+時的最好語法。因為他排除了你可能會呼叫到其它版本 perl 
+而不是你想要執行的版本。 因為我們將會在 Web servers 
+上執行我們的程式，因此，最好還是使用完整的路徑以避免出錯。 </p>
+
+<p>幾乎每一種系統都有命令列的介面（ command-line interface）。 在使用 
+Windows NT 時有個小訣竅： </p>
+
+<blockquote>
+  <pre>
+
+c:\NTperl\perl sample.pl
+
+</pre>
+</blockquote>
+
+<p><b>在 UNIX 中執行 perl：&nbsp;&nbsp;</b>UNIX 
+系統有另外一種執行方法便是可以在 script 檔中執行perl程式。你可以在 
+perl 檔案中的第一行放置下列的敘述，讓程式自動去執行perl程式： </p>
+
+<blockquote>
+  <pre>
+
+#!/usr/local/bin/perl
+
+</pre>
+</blockquote>
+
+<p>這一行告訴 UNIX 這個程式是由這個 /USR/LOCAL/BIN/PERL 路徑的 perl 
+程式去翻譯底下的命令，如此妳就可以讓程式自行去執行，但要作以下的修改：</p>
+
+<blockquote>
+  <pre>
+
+chmod +x sample.pl
+
+</pre>
+</blockquote>
+
+<p>如此，便可以直接執行這個程式，此程式的第一行便會告訴作業系統到哪裡去找到執行這個 
+perl的程式。 </p>
+
+<p><b>在 Windows NT中執行PERL程式&nbsp; </b>&nbsp;&nbsp; 
+前面所提到的東西在 UNIX 中可以很正常的執行，但是在 Windows NT 中就不見得可以執行
+。你可以使用 NT 的檔案管理員來建立附檔名為 .PL 的檔案和 Perl 的檔案關聯，這樣 
+Perl 就可以在 NT中執行。只要是附檔名為 .Pl NT 就知道這是 Perl 程式，就會自動去
+呼叫 Perl 來執行這個附檔名為 .PL 的程式。<br></p>
+<div align="center"><center>
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>備註</b></td></tr>
+  <tr VALIGN="TOP">
+    <td><blockquote><p>
+通常我們還需要幾個步驟才能讓 Web server 自動去執行 Perl 程式。
+參閱附錄 A &quot;Perl 取得及安裝&quot;－ 在特定的平台上建立 scripts 及直譯器的關
+聯性。</blockquote></td></tr></table></center></div>
+<h3><a NAME="CommandLineArguments">命令列參數</a></h3>
+<p>Perl 提供了各種針對不同目的而使用的參數（參閱 Table 1.1，大部分的參數都列在這
+裡）。
+the <tt>-t</tt> switch in particular is <i>de rigueur</i> in Web-based Perl scripts. <br>
+</p>
+
+<p align="center"><b>Table 1.1&nbsp;&nbsp;Perl 命令列參數</b> </p>
+<div align="center"><center>
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><b>參數</b></td>
+    <td WIDTH="125"><b>功能</b> </td>
+    <td WIDTH="192"><b>使用目的</b></td>
+    <td WIDTH="192"><b>備註</b> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-0</tt></td>
+    <td WIDTH="125">Octal character code </td>
+    <td WIDTH="192">Specify record separator</td>
+    <td WIDTH="192">Default is new line (<tt>\n</tt>) </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-a</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Automatically split records</td>
+    <td WIDTH="192">Used with <tt>-n</tt> or <tt>-p</tt> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-c</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Check syntax only do not execute </td>
+    <td WIDTH="192">&nbsp; </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-d</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Run script, using Perl debugger</td>
+    <td WIDTH="192">If Perl debugger is installed </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>\-D</tt></td>
+    <td WIDTH="125">Flags </td>
+    <td WIDTH="192">Specify debugging behavior</td>
+    <td WIDTH="192">Refer to the PERLDEBUG man page on the CD-ROM that comes with this book </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-e</tt></td>
+    <td WIDTH="125">Command </td>
+    <td WIDTH="192">Pass a command to Perl from the command line </td>
+    <td WIDTH="192">Useful for quick operations; see tip after this table for an example </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-F</tt></td>
+    <td WIDTH="125">Regular expression </td>
+    <td WIDTH="192">Expression to split by if <tt>-a</tt> is used </td>
+    <td WIDTH="192">Default is white space</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-i</tt></td>
+    <td WIDTH="125">Extension </td>
+    <td WIDTH="192">Replace original file with result</td>
+    <td WIDTH="192">Useful for modifying contents of files; see tip after this table for an 
+    example </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-I</tt></td>
+    <td WIDTH="125">Directory </td>
+    <td WIDTH="192">Specify location of include files</td>
+    <td WIDTH="192">&nbsp; </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-l</tt></td>
+    <td WIDTH="125">Octal character code </td>
+    <td WIDTH="192">Drop new lines when used with <tt>-n</tt> and <tt>-p</tt>, and use 
+    designated character as line-termination character </td>
+    <td WIDTH="192">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-n</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Process the script, using each specified file as an argument </td>
+    <td WIDTH="192">Used for performing the same set of actions on a set of files </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-p</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Same as <tt>-n</tt>, but each line is printed </td>
+    <td WIDTH="192">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-P</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Run the script through the C preprocessor before Perl compiles it </td>
+    <td WIDTH="192">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-s</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Enable passing of arbitrary switches to Perl </td>
+    <td WIDTH="192">Use <tt>-s -what -ever </tt>to have the Perl variables <tt>$what</tt> and <tt>$ever</tt> 
+    defined within your script </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-S</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Tell Perl to look along thepath for the script </td>
+    <td WIDTH="192">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-T</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Use taint checking; don't evaluate expressions supplied in the command 
+    line </td>
+    <td WIDTH="192">Very important for Web use</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-u</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">Makes Perl dump core after compiling your script; intended to allow for 
+    generation of Perl executables </td>
+    <td WIDTH="192">Very messy; wait for the Perl compiler</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-U</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">不安全模式; overrides Perl's natural caution. </td>
+    <td WIDTH="192">盡量不要使用！</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-v</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">顯示 Perl 版本</td>
+    <td WIDTH="192">&nbsp; </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="67"><p align="center"><tt>-w</tt></td>
+    <td WIDTH="125">&nbsp; </td>
+    <td WIDTH="192">印出語法錯誤的警告語</td>
+    <td WIDTH="192">非常有用，特別是在發展階段</td>
+  </tr>
+</table>
+</center></div><div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>TIP</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>The <tt>-e</tt> option is handy for quick Perl operations from the command line. Want 
+      to change all the <tt>foo</tt>s in WIFFLE.BAT to <tt>bar</tt>s? Try this: </p>
+    </blockquote>
+    <blockquote>
+      <tt><p>perl -i.old -p -e &quot;s/foo/bar/g&quot; wiffle.bat</tt> </p>
+    </blockquote>
+    <blockquote>
+      <p>This code says, &quot;Take each line of WIFFLE.BAT (<tt>-p</tt>), store the original in 
+      WIFFLE.OLD (<tt>-i</tt>), replace all instances of <tt>foo</tt> with <tt>bar</tt> (<tt>-e</tt>), 
+      and write the result (<tt>-p</tt>) to the original file (<tt>-i</tt>).&quot; </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+<p>你可以在 UNIX 中使用 Perl命令列參數，底下即為範例：
+
+<blockquote><pre>
+
+#!/usr/local/bin/perl -w -T
+
+</pre>
+</blockquote>
+<div align="center"><center>
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>注意事項</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>The <tt>-w</tt> switch is best omitted in versions of Perl older than 5.002, because it 
+      may produce spurious warnings. </p>
+    </blockquote>
+    <blockquote>
+      <p>Also, take care when you use the <tt>-w</tt> switch in scripts that send data to Web 
+      browsers. Warning messages sent before the browser receives a content-type line may result 
+      in an error message. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<h3><a NAME="ProgramLayout">程式的佈局（Program Layout）</a></h3>
+
+<p>一個 Perl 程式是由 包含了不同的 perl 命令的 
+文字檔所組成。這些命令是由一些看起來非常像 C, shell script, 
+以及英文所組成。</p>
+
+<p>Perl 程式可以是非常自由的形式，因為他的語法規則非常寬鬆： 
+
+<ul>
+  <li>開頭的空間會被程式忽略。你可以在任何你喜歡的地方開始 PERL 
+    的程式。只要你喜歡，你可以在第一行開始，或是使用傳統的階層式語法（建議使用），或是自創的形式（只要你看的懂）。</li>
+  <li>程式是用分號（；）作為結束 。</li>
+  <li>&nbsp; 
+    一個空格和一百個空格是一樣好的。這也就是說你可以將太長的敘述式分割成數行以方便閱讀。 
+  </li>
+  <li>在這個符號 (<tt>#</tt>)後方的任何東西都會被忽略不去執行。&nbsp; </li>
+</ul>
+
+<p>底下就是一個 Perl 表達式：</p>
+
+<blockquote>
+  <pre>
+
+print &quot;My name is Andy Liu\n;
+
+</pre>
+</blockquote>
+
+<p>當 Perl 執行上面這個程式時，會在螢幕上印出： <tt>My name is </tt>Andy 
+Liu。當 perl 程式執行到&nbsp; <tt>\n</tt>&nbsp; 時，程式會自動換行。 
+（用其他的話來說，就是跳到下一行的開頭）。</p>
+
+<p>列印更多行的方法，就是將上面的例子執行多次的結果。</p>
+
+<blockquote>
+  <pre>
+
+print &quot;My name is Yon Yonson,\n&quot;;
+
+print &quot;I live in Wisconsin,\n&quot;,
+
+      &quot;I work in a lumbermill there.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>完整的 Perl 程式看起來像什麼呢？底下是一個 UNIX 
+的範例，一開始指出了 perl程式的所在地以及幾行註解：</p>
+
+<blockquote>
+  <pre>
+
+#!/usr/local/bin/perl -w                    # 顯示警告訊息
+
+
+print &quot;My name is Andy Liu,\n&quot;;           # Let's introduce ourselves
+
+print &quot;I live in Taiwan,\n&quot;,
+
+      &quot;I work in a lumbermill there.\n&quot;;    # 別忘了以分號最為結束
+
+</pre>
+</blockquote>
+
+<h2><font SIZE="5" COLOR="#FF0000"><a NAME="DataTypes">資料結構（Data Types）</a></font></h2>
+
+<p>Perl 的資料種類非常地少。如果你習慣 C 語言這種連字元都分為 unsigned 及 signed
+那你使用 Perl 將會非常愉快。基本上 Perl 只有兩種資料結構：
+<i>數值 scalars</i> 以及 <i>陣列 arrays</i>。 Perl 同樣也有 <i>聯合陣列 
+associative arrays</i>這是一種較特殊的陣列，幾乎可自成一類。
+
+<h3>數值 <a NAME="Scalars">Scalars</a></h3>
+<p>所有的數字及字串都稱為 <i>數值資料 scalars</i>。所有的 Scalar-variable 
+前面都有一個 (<tt>$</tt>).<br></p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>註解</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>Perl 的所有變數名稱，包含數值資料都有大小寫之分。比如說：<tt>$Name</tt> 和<tt>$name</tt>就被視為完全不同的東西。
+    </p></blockquote></td></tr></table></center></div>
+
+<p>Perl 會自己將 Scalars 轉換成數值資料或是數字型態。 </p>
+<blockquote>
+  <pre>
+
+$a = 2;
+
+$b = 6;
+
+$c = $a . $b;  # &quot;.&quot; 運算元會將兩個字串連起來。
+$d = $c / 2;
+
+print $d;
+
+</pre>
+</blockquote>
+
+<p>執行的結果為： </p>
+
+<blockquote>
+  <pre>
+
+13
+
+</pre>
+</blockquote>
+
+<p>上面這個例子會將兩個整數轉成字串，然後將兩個字串連結成一個新的字串變數，然後
+將新字串轉換成整數型態，再用2去除，再將結果轉換成字串並印出結果到螢幕上。</p>
+
+<p>This situation might be a problem if Perl were regularly used for tasks in which 
+explicit memory offsets were used, for example, and data types were critical. But for the 
+type of task for which Perl is normally used-and certainly for the types of tasks that 
+we'll be using it for in this book-these automatic conversions are smooth, intuitive, and 
+generally a Good Thing. </p>
+
+<p>We can develop the earlier example script with some string variables, as follows: </p>
+
+<blockquote>
+  <pre>
+
+#!/usr/local/bin/perl -w                    #顯示警告訊息 
+
+
+
+$who = 'Yon Yonson';
+
+$where = 'Wisconsin';
+
+$what = 'in a lumbermill';
+
+
+
+print &quot;My name is $who,\n&quot;;                 #介紹自己 
+
+print &quot;I live in $where,\n&quot;,
+
+      &quot;I work $what there.\n&quot;;
+
+
+
+print &quot;\nSigned: \t$who,\n\t\t$where.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>執行後，會產生下列結果：</p>
+
+<blockquote>
+  <pre>
+
+My name is Yon Yonson,
+
+I work in Wisconsin,
+
+I work in a lumbermill there.
+
+
+
+Signed:	Yon Yonson,
+
+		Wisconsin.
+
+</pre>
+</blockquote>
+
+<p>Don't worry-it gets better. </p>
+
+<h3>陣列 <a NAME="Arrays">Arrays</a></h3>
+
+<p>數值資料的集合我們稱為<i>陣列 array</i>. 陣列變數會用 (<tt>@</tt>) 
+符號作為第一個字的開始。陣列中的元素之間會用逗號隔開，就像下面顯示的例子一樣： 
+</p><blockquote>
+  <pre>
+
+@trees = (&quot;Larch&quot;, &quot;Hazel&quot;, &quot;Oak&quot;);
+
+</pre>
+</blockquote>
+
+<p>陣列的元素可以用中括號來表示，舉例來說：<tt>$trees[0]</tt>表示這是<tt>@trees
+</tt>陣列的第一個元素。注意：這裡是使用<tt>$trees[0]</tt>而不是<tt>@trees[0]
+</tt>因為個別的元素是數值資料，所以前面要用<tt>$</tt>來取得元素的值。</p>
+<p>Mixing scalar types in an array is not a problem. The code </p>
+
+<blockquote>
+  <pre>
+
+@items = (15, '45.67', &quot;case&quot;);
+
+print &quot;Take $items[0] $items[2]s at \$$items[1] each.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>底下是執行的結果：</p>
+
+<blockquote>
+  <pre>
+
+Take 15 cases at $45.67 each.
+
+</pre>
+</blockquote>
+
+<p>Perl 裡面的陣列都是動態的，妳根本不需要去擔心記憶體的配置及管理。Perl 會為你
+做好所有的工作。陣列之中又可以包含陣列，底下舉個例子來說：</p>
+<blockquote>
+  <pre>
+
+@A = (1, 2, 3);
+
+@B = (4, 5, 6);
+
+@C = (7, 8, 9);
+
+@D = (@A, @B, @C);
+
+</pre>
+</blockquote><p>
+這個程式執行的結果：陣列<tt>@D</tt>包含了資料 1 到 9。底下是我們常用的陣列用法：
+</p><blockquote>
+  <pre>
+
+@Annual = (@Spring, @Summer, @Fall, @Winter);
+
+</pre>
+</blockquote>
+
+<p>這個範例程式將一年中的季節用一種簡潔又直接易懂的陣列來表達。而陣列中的季節又
+可以轉換為包含月份的陣列，每個月的陣列又可以轉換成為包含天數的資料。
+<tt>@Annual</tt>陣列可以變成由一年中的每一天的值所組成。
+array then would consist of a value for each day of the year. By defining your data in 
+chunks such as this, you give yourself the option of handling it on a daily, monthly, or 
+annual basis. <br>
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>NOTE</b></td>
+  </tr>
+  <tr VALIGN="TOP"><td><blockquote><p>
+An aspect of Perl that often confuses newcomers (and occasionally old hands, too) is 
+      the context-sensitive nature of evaluations. Perl keeps track of the context in which an 
+      expression is being evaluated and can return a different value in an array context than in 
+      a scalar context. In this example, the array <tt>@B</tt> contains 1-4, whereas <tt>$C</tt> 
+      contains 4 (the number of values in the array): </p>
+    </blockquote>
+    <blockquote>
+      <tt><p>@A = (1, 2, 3, 4);<br>
+      @B = @A;<br>
+      $C = @A;</tt> </p>
+    </blockquote>
+    <blockquote>
+      <p>This context sensitivity becomes more of an issue when you use functions and operators 
+      that can take either a single argument or multiple arguments. The function or argument 
+      behaves one way when it is passed a single <i>scalar</i> argument and another when it is 
+      passed multiple arguments, which it may interpret as a single <i>array</i> argument. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>Many of Perl's built-in functions take arrays as arguments. One example is <tt>sort</tt>, 
+which takes an array as an argument and returns the same array, sorted alphabetically. The 
+code </p>
+
+<blockquote>
+  <pre>
+
+print sort ( 'Beta', 'Gamma', 'Alpha' );
+
+</pre>
+</blockquote>
+
+<p>prints <tt>AlphaBetaGamma</tt>. </p>
+
+<p>You can make this code neater by using another built-in function, called <tt>join</tt>. 
+This function takes two arguments: a string to connect with, and an array of strings to 
+connect. <tt>join</tt> returns a single string that consists of all elements in the array 
+joined with the connecting string. The code </p>
+
+<blockquote>
+  <pre>
+
+print join ( ' : ', 'Name', 'Address', 'Phone'  );
+
+</pre>
+</blockquote>
+
+<p>returns the string <tt>Name : Address : Phone</tt>. </p>
+
+<p>Because <tt>sort</tt> returns an array, you can feed its output straight into <tt>join</tt>. 
+The code </p>
+
+<blockquote>
+  <pre>
+
+print join( ', ', sort ( 'Beta', 'Gamma', 'Alpha' ) );
+
+</pre>
+</blockquote>
+
+<p>prints <tt>Alpha, Beta, Gamma</tt>. </p>
+
+<p>Notice that this code doesn't separate the initial scalar argument of <tt>join</tt> 
+from the array that follows it. The first argument is the string to join things with. The 
+rest of the arguments are treated as a single argument: the array to be joined. This is 
+true even if you use parentheses to separate groups of arguments. The code </p>
+
+<blockquote>
+  <pre>
+
+print join( ': ', ('A', 'B', 'C'), ('D', 'E'), ('F', 'G', 'H', 'I'));
+
+</pre>
+</blockquote>
+
+<p>returns <tt>A: B: C: D: E: F: G: H: I</tt>. </p>
+
+<p>You can use one array or multiple arrays in a context such as this because of the way 
+that Perl treats arrays; adding an array to an array gives you one larger array, not two 
+arrays. In this case, all three arrays are bundled into one.<br>
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>TIP</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>For even more powerful string-manipulation capabilities, refer to the <tt>splice</tt> 
+      function in <a HREF="ch15.htm">Chapter 15</a>, &quot;Function List.&quot; </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<h3>組合陣列<a NAME="AssociativeArrays">Associative Arrays</a></h3>
+
+<p>Associative arrays have a certain elegance that makes experienced Perl programmers a 
+little snobbish about their language of choice. Rightly so! Associative arrays give Perl a 
+degree of database functionality at a very low, yet useful, level. Many tasks that would 
+otherwise involve complex programming can be reduced to a handful of Perl statements by 
+means of associative arrays. </p>
+
+<p>Arrays of the type that you've already seen are <i>lists of values indexed by 
+subscripts</i>. In other words, to get an individual element of an array, you supply a 
+subscript as a reference, as follows: </p>
+
+<blockquote>
+  <pre>
+
+@fruit = ( &quot;Apple&quot;, &quot;Orange&quot;, &quot;Banana&quot; );
+
+print $fruit[2];
+
+</pre>
+</blockquote>
+
+<p>This example yields <tt>Banana</tt>, because subscripts start at zero, so <tt>2</tt> is 
+the subscript for the third element of the <tt>@fruit</tt> array. A reference to <tt>$fruit[7]</tt> 
+here returns the null value, because no array element with that subscript has been 
+defined. </p>
+
+<p>Now, here's the point of all this: <i>Associative arrays are lists of values indexed by 
+strings</i>. Conceptually, that's all there is to them. The implementation of associative 
+arrays is more complex, because all the strings (<i>keys</i>) need to be stored in 
+addition to the values to which they refer. </p>
+
+<p>When you want to refer to an element of an associative array, you supply a string (the 
+key) instead of an integer (the subscript). Perl returns the corresponding value. Consider 
+the following example: </p>
+
+<blockquote>
+  <pre>
+
+%fruit = (&quot;Green&quot;, &quot;Apple&quot;, &quot;Orange&quot;, &quot;Orange&quot;, &quot;Yellow&quot;, &quot;Banana&quot; );
+
+print $fruit{&quot;Yellow&quot;};
+
+</pre>
+</blockquote>
+
+<p>This code prints <tt>Banana</tt>, as before. The first line defines the associative 
+array in much the same way that you have already defined ordinary arrays; the difference 
+is that instead of listing values, you list key/value pairs. The first value is <tt>Apple</tt>, 
+and its key is <tt>Green</tt>. The second value is <tt>Orange</tt>, which happens to have 
+the same string for both value and key. Finally, the value <tt>Banana</tt> has the key <tt>Yellow</tt>. 
+</p>
+
+<p>On a superficial level, you can use string subscripts to provide mnemonics for array 
+references, allowing you to refer to <tt>$Total{'June'}</tt> instead of <tt>$Total[5]</tt>. 
+But you wouldn't even be beginning to use the power of associative arrays. Think of the 
+keys of an associative arrays as you might think of a key that links tables in a 
+relational database, and you're closer to the idea. Consider this example: </p>
+
+<blockquote>
+  <pre>
+
+%Folk =   ( 'YY', 'Yon Yonson',
+
+            'TC', 'Terra Cotta',
+
+            'RE', 'Ron Everly' );
+
+
+
+%State = ( 'YY', 'Wisconsin',
+
+           'TC', 'Minnesota',
+
+           'RE', 'Bliss' );
+
+
+
+%Job = ( 'YY', 'work in a lumbermill',
+
+         'TC', 'teach nuclear physics',
+
+         'RE', 'watch football');
+
+
+
+foreach $person ( 'TC', 'YY', 'RE' )  {
+
+        print &quot;My name is $Folk{$person},\n&quot;,
+
+              &quot;I live in $State{$person},\n&quot;,
+
+              &quot;I $Job{$person} there.\n\n&quot;;
+
+        }
+
+</pre>
+</blockquote>
+
+<p>這個例子裡，我們偷偷的使用了 <tt>foreach</tt> 這個結構式。這個結構式在本章稍
+後的流程控制部分會再詳細的解釋。 For now, you'll just have to take it on trust that <tt>foreach</tt> makes Perl execute the three <tt>print</tt> 
+statements for each of the people in the list after the <tt>foreach</tt> keyword. 
+Otherwise, you could try executing the code in the sample and see what happens. </p>
+
+<p>You also can treat the keys and values of an associative array as separate (ordinary) 
+arrays by using the <tt>keys</tt> and <tt>values</tt> keywords, respectively. The code </p>
+
+<blockquote>
+  <pre>
+
+print keys %Folk;
+
+print values %State;
+
+</pre>
+</blockquote>
+
+<p>prints the string <tt>YYRETCWisconsinBlissMinnesota</tt>. </p>
+
+<p>Looks as though we need to do some more work on string handling. That task is best left 
+until after we cover some flow-control mechanisms, however.<br>
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>NOTE</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>A special associative array called <tt>%ENV</tt> stores the contents of all environment 
+      variables, indexed by variable name. <tt>$ENV{'PATH'}</tt>, for example, returns the 
+      current search path. Following is a way to print the current values of all environment 
+      variables, sorted by variable name for good measure: </p>
+    </blockquote>
+    <blockquote>
+      <tt><p>foreach $var (sort keys %ENV ) {<br>
+      print &quot;$var: \&quot;$ENV{$var}\&quot;.\n&quot;;<br>
+      }</tt> </p>
+    </blockquote>
+    <blockquote>
+      <p>The <tt>foreach</tt> clause sets <tt>$var</tt> to each of the environment-variable 
+      names in turn (in alphabetical order), and the <tt>print</tt> statement prints each name 
+      and value. The backslash-<tt>quote</tt> (<tt>\&quot;</tt>) in there produces quotation 
+      marks around the values. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<h3><a NAME="FileHandles">File Handles</a></h3>
+
+<p>This chapter finishes discussing Perl data types by discussing file handles. A <i>file 
+handle</i> is not really a data type at all, but a special kind of literal string. A file 
+handle behaves like a variable in many ways, however, so this section is a good place to 
+cover them. (Besides, you won't get very far in Perl without them.) </p>
+
+<p>You can regard a file handle as being a pointer to a file from which Perl is to read or 
+to which it will write. (C programmers are familiar with the concept.) The basic idea is 
+that you associate a handle with a file or device, and then refer to the handle in the 
+code whenever you need to perform a read or write operation. </p>
+
+<p>File handles generally are written in uppercase. Perl has some useful predefined file 
+handles, as Table 1.2 shows.<br>
+</p>
+
+<p align="center"><b>Table 1.2&nbsp;&nbsp;Perl's Predefined File Handles</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="96"><b>File Handle</b></td>
+    <td WIDTH="494"><b>Points to…</b> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="96"><tt>STDIN</tt></td>
+    <td WIDTH="494">Standard input (normally, the keyboard) </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="96"><tt>STDOUT</tt></td>
+    <td WIDTH="494">Standard output (normally, the console; in many Web applications, the 
+    browser) </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="96">STDERR</td>
+    <td WIDTH="494">Device where error messages should be written (normally, the console; in a 
+    Web server environment, normally, the server-error log file) </td>
+  </tr>
+</table>
+</center></div>
+
+<p>The <tt>print</tt> statement can take a file handle as its first argument, as follows: </p>
+
+<blockquote>
+  <pre>
+
+print STDERR &quot;Oops, something broke.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>Notice that no comma appears after the file handle in this example. That helps Perl 
+figure out that the <tt>STDERR</tt> is not something to be printed. If you're uneasy with 
+this implicit list syntax, you can put parentheses around all the <tt>print</tt> 
+arguments, as follows: </p>
+
+<blockquote>
+  <pre>
+
+print (STDERR &quot;Oops, something broke.\n&quot;);
+
+</pre>
+</blockquote>
+
+<p>You still have no comma after the file handle, however.<br>
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>TIP</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>Use the standard file handles explicitly, especially in complex programs. Redefining 
+      the standard input or output device for a while is convenient sometimes; make sure that 
+      you don't accidentally wind up writing to a file what should have gone to the screen.</p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>You can use the <tt>open</tt> function to associate a new file handle with a file, as 
+follows: </p>
+
+<blockquote>
+  <pre>
+
+open (INDATA, &quot;/etc/stuff/Friday.dat&quot;);
+
+open (LOGFILE, &quot;&gt;/etc/logs/reclaim.log&quot;);
+
+print LOGFILE &quot;Log of reclaim procedure\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>By default, <tt>open</tt> opens files for reading only. If you want to override this 
+default behavior, add to the file name one of the special direction symbols listed in 
+Table 1.3. (The <tt>&gt;</tt> at the start of the file name in the second <tt>output</tt> 
+statement of the preceding example, for example, tells Perl that you intend to write to 
+the named file.)<br>
+</p>
+
+<p align="center"><b>Table 1.3&nbsp;&nbsp;Perl File-Access Symbols</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><b>Symbol</b></td>
+    <td WIDTH="432"><b>Meaning</b> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>&lt;</tt></td>
+    <td WIDTH="432">Open the file for reading (the default action) </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>&gt;</tt></td>
+    <td WIDTH="432">Open the file for writing </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>&gt;&gt;</tt></td>
+    <td WIDTH="432">Open the file for appending </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>+&lt;</tt></td>
+    <td WIDTH="432">Open the file for both reading and writing </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>+&gt;</tt></td>
+    <td WIDTH="432">Open the file for both reading and writing </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>|</tt> (before file name)</td>
+    <td WIDTH="432">Treat file as command into which Perl is to pipe text </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="144"><tt>|</tt> (after file name)</td>
+    <td WIDTH="432">Treat file as command from which input is to be piped to Perl </td>
+  </tr>
+</table>
+</center></div>
+
+<p>To take a more complex example, here's one way to feed output to the <tt>mypr</tt> 
+printer on a UNIX system: </p>
+
+<blockquote>
+  <pre>
+
+open (MYLPR, &quot;|lpr -Pmypr&quot;);
+
+print MYLPR &quot;A line of output\n&quot;;
+
+close MYLPR;
+
+</pre>
+</blockquote>
+
+<p>A special Perl operator for reading from files consists of two angle 
+brackets-&lt;&gt;-around the file handle of the file from which you want to read. This 
+operator returns the next line or lines of input from the file or device, depending on 
+whether the operator is used in a scalar or an array context. When no more input remains, 
+the operator returns <tt>false</tt>. </p>
+
+<p>A construct such as </p>
+
+<blockquote>
+  <pre>
+
+while (&lt;STDIN&gt;) {
+
+print;
+
+}
+
+</pre>
+</blockquote>
+
+<p>simply echoes each line of input back to the console until Ctrl+D (Ctrl+Z in Windows 
+NT) is pressed, because the <tt>print</tt> function takes the current default argument 
+here: the most recent line of input. For an explanation, see &quot;Special Variables&quot; 
+later in this chapter. </p>
+
+<p>If the user types </p>
+
+<blockquote>
+  <pre>
+
+A
+
+Bb
+
+Ccc
+
+^D
+
+</pre>
+</blockquote>
+
+<p>the screen looks like this: </p>
+
+<blockquote>
+  <pre>
+
+A
+
+A
+
+Bb
+
+Bb
+
+Ccc
+
+Ccc
+
+^D
+
+</pre>
+</blockquote>
+
+<p>Notice that in this case, <tt>&lt;STDIN&gt;</tt> is in a scalar context, so one line of 
+standard input is returned at a time. Compare that example with the following example: </p>
+
+<blockquote>
+  <pre>
+
+print &lt;STDIN&gt;;
+
+</pre>
+</blockquote>
+
+<p>In this case, because <tt>print</tt> expects an array of arguments (it can be a 
+single-element array, but it's an array as far as <tt>print</tt> is concerned), the <tt>&lt;&gt;</tt> 
+operator obligingly returns all the contents of <tt>STDIN</tt> as an array, and then <tt>print</tt> 
+prints it. Because the array is fully built before it is printed, nothing is written to 
+the console until the user presses Ctrl+D: </p>
+
+<blockquote>
+  <pre>
+
+A
+
+Bb
+
+Ccc
+
+^D
+
+A
+
+Bb
+
+Ccc
+
+</pre>
+</blockquote>
+
+<p>This script prints out the contents of the file .SIGNATURE, double-spaced: </p>
+
+<blockquote>
+  <pre>
+
+open (SIGFILE, &quot;.signature&quot;);
+
+while ( &lt;SIGFILE&gt; )  {
+
+	print; print &quot;\n&quot;;
+
+	}
+
+</pre>
+</blockquote>
+
+<p>The first <tt>print</tt> here has no arguments, so it takes the current default 
+argument and prints it. The second <tt>print</tt> has an argument, so it prints that 
+instead. Perl's habit of using default arguments extends to the <tt>&lt;&gt;</tt> 
+operator; if that operator is used with no file handle, Perl assumes that <tt>&lt;ARGV&gt;</tt> 
+is intended. <tt>&lt;ARGV&gt; </tt>expands to each line in turn of each file listed in the 
+command line. </p>
+
+<p>If no files are listed in the command line, Perl instead assumes that <tt>STDIN</tt> is 
+intended. The following code, therefore, keeps printing <tt>more </tt>as long as something 
+other than Ctrl+D appears in standard input: </p>
+
+<blockquote>
+  <pre>
+
+while (&lt;&gt;) {
+
+print &quot;more.... &quot;;
+
+}
+
+
+</pre>
+</blockquote>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>NOTE</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>Perl 5 allows array elements to be references to any data type. As a result, you can 
+      build arbitrary data structures of the kind used in C and other high-level languages, but 
+      with all the power of Perl. You can have an array of associative arrays, for example.</p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<h2><a NAME="SpecialVariables"><font SIZE="5" COLOR="#FF0000">Special Variables</font></a></h2>
+
+<p>Like all languages, Perl has its special hieroglyphs, which are laden with meaning. 
+This section briefly examines some of the most common and useful variables, and provides 
+some examples of typical Perl idioms in which you might find them. </p>
+
+<h3><a NAME="EnvironmentVariables">Environment Variables</a></h3>
+
+<p>You have already seen one special variable: the environment-variable associative array <tt>%ENV</tt>. 
+This special associative array allows you to easily use the value of any environment 
+variable within your Perl scripts: </p>
+
+<blockquote>
+  <pre>
+
+print &quot;Looking for files along the path ($ENV{'PATH'})   \n&quot;;
+
+</pre>
+</blockquote>
+
+<p>The <tt>%ENV</tt> array is quite useful in CGI programming, in which parameters are 
+passed from the browser to CGI programs as environment settings. </p>
+
+<h3><a NAME="ProgramArguments">Program Arguments</a></h3>
+
+<p>Any arguments specified in the Perl command line are passed to the Perl script in 
+another special array: <tt>@ARGV</tt>.<br>
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>CAUTION</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>C programmers, beware: The first element of this array is the first actual argument, 
+      not the name of the program. The special variable <tt>$0</tt> contains the name of the 
+      Perl script that is being executed. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>The following code prints the command-line arguments one per line, sorted 
+alphabetically: </p>
+
+<blockquote>
+  <pre>
+
+print join(&quot;\n&quot;, sort @ARGV);
+
+</pre>
+</blockquote>
+
+<p>The command-line arguments are of limited use in CGI scripts, in which arguments are 
+passed via the environment rather than the command line. These arguments are quite useful 
+in normal Perl work, of course. </p>
+
+<h3><a NAME="CurrentLine">Current Line</a></h3>
+
+<p>The special variable <tt>$_</tt> is often used to store the current line of input. This 
+situation is true when the <tt>&lt;&gt;</tt> input operator is used. The following code, 
+for example, prints a numbered listing of the file pointed to by <tt>SOMEFILE</tt>: </p>
+
+<blockquote>
+  <pre>
+
+$line=0;
+
+while ( &lt;SOMEFILE&gt; )  {
+
+	++$line;
+
+	print &quot;Line $line : &quot;, $_;
+
+	}
+
+</pre>
+</blockquote>
+
+<p>You occasionally need to store the contents of <tt>$_</tt> somewhere, as in the 
+following example: </p>
+
+<blockquote>
+  <pre>
+
+$oldvalue = $_;
+
+</pre>
+</blockquote>
+
+<p>But the opposite operation-setting the value of <tt>$_</tt> manually-is rarely 
+appropriate, as in this example: </p>
+
+<blockquote>
+  <pre>
+
+$_ = $oldvalue;
+
+</pre>
+</blockquote>
+
+<p>Pattern matching and substitution take place on the contents of this variable unless 
+you specify otherwise. These topics are covered in &quot;Regular Expressions&quot; later 
+in this chapter. </p>
+
+<h3><a NAME="SystemErrorMessages">System Error Messages</a></h3>
+
+<p>The special variable <tt>$!</tt> contains the current system-error number (<tt>errno</tt>, 
+on UNIX systems) or system-error string, depending on whether it is evaluated in a numeric 
+or string context. This variable may not contain anything meaningful; it should be used 
+only if an error occurred. </p>
+
+<p>This example reports failure if the open call failed: </p>
+
+<blockquote>
+  <pre>
+
+open ( INFILE, &quot;./missing.txt&quot;) || die &quot;Couldn't open \&quot;./missing.txt\&quot; ($!).\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>The <tt>||</tt> here is the Boolean <tt>or</tt> operator, which is covered in 
+&quot;Flow Control&quot; later in this chapter. <tt>die</tt> causes Perl to terminate 
+after printing the string given to <tt>die</tt> as an argument. </p>
+
+<p>If the file does not exist, Perl terminates after displaying something like this: </p>
+
+<blockquote>
+  <pre>
+
+Couldn't open &quot;./missing.txt&quot; (No such file or directory).
+
+</pre>
+</blockquote>
+
+<p>The form and content of error messages vary from one system to the next. </p>
+
+<h2><a NAME="FlowControl"><font SIZE="5" COLOR="#FF0000">流程控制</font></a></h2>
+
+<p>The examples that you have seen so far have been quite simple, with little or no logical structure beyond a linear sequence of steps. We managed to sneak in the occasional <tt>while</tt> and <tt>foreach</tt>; think of those as being sneak previews. Perl has all the flow-control mechanisms that you'd expect to find in a high-level language, and this section takes you through the basics of each mechanism. </p>
+
+<h3><a NAME="LogicalOperators">邏輯運算元</a></h3>
+
+<p>Two operators-<tt>||</tt> (<tt>or</tt>) and <tt>&amp;&amp;</tt> (<tt>and</tt>)-are used like glue to hold Perl programs together. They take two operands and return either true or false, depending on the operands. In the following example, if either <tt>$Saturday </tt>or <tt>$Sunday</tt> is true, <tt>$Weekend</tt> will be true, too: </p>
+
+<blockquote>
+  <pre>
+
+$Weekend = $Saturday || $Sunday;
+
+</pre>
+</blockquote>
+
+<p>In the next example, <tt>$Solvent</tt> is true only if <tt>$income</tt> is greater than 
+3 and <tt>$debts</tt> is less than 10: </p>
+
+<blockquote>
+  <pre>
+
+$Solvent = ($income &gt; 3) &amp;&amp; ($debts &lt; 10);
+
+</pre>
+</blockquote>
+
+<p>Now consider the logic of evaluating one of these expressions. It isn't always 
+necessary to evaluate both operands of either an <tt>&amp;&amp;</tt> or a <tt>||</tt> 
+operator. In the first example earlier in this section, if <tt>$Saturday</tt> is true, you 
+know that <tt>$Weekend</tt> will be true, regardless of whether <tt>$Sunday</tt> is also 
+true (the midnight condition, perhaps?). </p>
+
+<p>This means that when the left side of an <tt>or</tt> expression is evaluated as true, 
+the right side is not evaluated. Combine this with Perl's easy way with data types, and 
+you can say things like the following: </p>
+
+<blockquote>
+  <pre>
+
+$value &gt; 10 || print &quot;Oops, low value   \n&quot;;
+
+</pre>
+</blockquote>
+
+<p>If <tt>$value</tt> <i>is</i> greater than 10, the right side of the expression is never 
+evaluated, so nothing is printed. If <tt>$value</tt> <i>is not</i> greater than 10, Perl 
+needs to evaluate the right side, too, so as to decide whether the expression as a whole 
+is true or false. That means that Perl evaluates the <tt>print</tt> statement, printing 
+out the message. </p>
+
+<p>OK, it's a trick, but it's a very useful one. </p>
+
+<p>Something analogous applies to the <tt>&amp;&amp;</tt> operator. In this case, if the 
+left side of an expression is false, the expression as a whole is false, so Perl does not 
+evaluate the right side. The <tt>&amp;&amp; </tt>operator can, therefore, be used to 
+produce the same kind of effect as the <tt>||</tt> trick, but with the opposite sense, as 
+in the following example: </p>
+
+<blockquote>
+  <pre>
+
+$value &gt; 10 &amp;&amp; print &quot;OK, value is high enough   \n&quot;;
+
+</pre>
+</blockquote>
+
+<p>As is true of most Perl constructs, the real power of these tricks comes when you apply 
+a little creative thinking. Remember that the left and right sides of these expressions 
+can be any Perl expressions; think of them as being conjunctions in a sentence rather than 
+logical operators, and you'll get a better feel for how to use them. Expressions such as 
+the following give you a little of the flavor of creative Perl: </p>
+
+<blockquote>
+  <pre>
+
+$length &lt;= 80 || die &quot;Line too long.\n&quot;;
+
+$errorlevel &gt; 3 &amp;&amp; warn &quot;Hmmm, strange error level ($errorlevel)   \n&quot;;
+
+open ( LOGFILE, &quot;&gt;install.log&quot;) || &amp;bust(&quot;Log file&quot;);
+
+</pre>
+</blockquote>
+
+<p>The <tt>&amp;bust</tt> in this example is a subroutine call, by the way. Refer to 
+&quot;Subroutines&quot; later in this chapter for more information. </p>
+
+<h3><a NAME="ConditionalExpressions">Conditional Expressions</a></h3>
+
+<p>The most basic kind of flow control is a simple branch. A statement is either executed 
+or not, depending on whether a logical expression is true or false. You can do this by 
+following the statement with a modifier and a logical expression, as follows: </p>
+
+<blockquote>
+  <pre>
+
+open ( INFILE, &quot;./missing.txt&quot;) if $missing;
+
+</pre>
+</blockquote>
+
+<p>The execution of the statement is contingent upon <i>both</i> the evaluation of the 
+expression and the sense of the operator. </p>
+
+<p>The expression is evaluated as either true or false and can contain any of the 
+relational operators listed in Table 1.4 (although it need not). Following are a few 
+examples of valid expressions: </p>
+
+<blockquote>
+  <pre>
+
+$full
+
+$a == $b
+
+&lt;STDIN&gt;
+
+
+</pre>
+</blockquote>
+
+<p align="center"><b>Table 1.4&nbsp;&nbsp;Perl's Relational Operators</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="60%">
+  <tr VALIGN="TOP">
+    <td><b>Operator</b></td>
+    <td><p align="center"><b>Numeric Context</b> </td>
+    <td><p align="center"><b>String Context</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Equality</td>
+    <td><p align="center"><tt>==</tt> </td>
+    <td><p align="center"><tt>eq</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Inequality</td>
+    <td><p align="center"><tt>!=</tt> </td>
+    <td><p align="center"><tt>ne</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Inequality with signed result</td>
+    <td><p align="center"><tt>&lt;=&gt;</tt> </td>
+    <td><p align="center"><tt>cmp</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Greater than</td>
+    <td><p align="center"><tt>&gt;</tt> </td>
+    <td><p align="center"><tt>gt</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Greater than or equal to</td>
+    <td><p align="center"><tt>&gt;=</tt> </td>
+    <td><p align="center"><tt>ge</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Less than</td>
+    <td><p align="center"><tt>&lt;</tt> </td>
+    <td><p align="center"><tt>lt</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td>Less than or equal to</td>
+    <td><p align="center"><tt>&lt;=</tt> </td>
+    <td><p align="center"><tt>le</tt></td>
+  </tr>
+</table>
+</center></div><div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>NOTE</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>When we're comparing strings, <i>less than</i> means <i>lexically less than</i>. If <tt>$left</tt> 
+      comes before <tt>$right</tt> when the two are sorted alphabetically, <tt>$left</tt> is 
+      less than <tt>$right</tt>. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>Perl has four modifiers, each of which behaves the way that you might expect from the 
+corresponding English word: 
+
+<ul>
+  <li><tt>if</tt>. The statement is executed if the logical expression is true and is not 
+    executed otherwise. Examples:<br>
+    <tt>$max = 100 if $min &lt; 100;<br>
+    print &quot;Empty!\n&quot; if !$full;</tt> </li>
+  <li><tt>unless</tt>. The statement is not executed if the logical expression is true and is 
+    executed otherwise. Examples:<br>
+    <tt>open (ERRLOG, &quot;test.log&quot;) unless $NoLog;<br>
+    print &quot;Success&quot; unless $error&gt;2;</tt> </li>
+  <li><tt>while</tt>. The statement is executed repeatedly until the logical expression is 
+    false. Examples:<br>
+    <tt>$total -= $decrement while $total &gt; $decrement;<br>
+    $n=1000; &quot;print $n\n&quot; while $n- &gt; 0;</tt> </li>
+  <li><tt>until</tt>. The statement is executed repeatedly until the logical expression is 
+    true. Examples:<br>
+    <tt>$total += $value[$count++] until $total &gt; $limit;<br>
+    print RESULTS &quot;Next value: $value[$n++]&quot; until $value[$n] = -1;</tt> </li>
+</ul>
+
+<p>Notice that the logical expression is evaluated only one time in the case of <tt>if</tt> 
+and <tt>unless</tt>, but multiple times in the case of <tt>while</tt> and <tt>until</tt>. 
+In other words, the first two are simple conditionals, and the last two are loop 
+constructs. </p>
+
+<h3><a NAME="CompoundStatements">Compound Statements</a></h3>
+
+<p>The syntax changes when you want to make the execution of multiple statements 
+contingent on the evaluation of a logical expression. The modifier comes at the start of a 
+line, followed by the logical expression in parentheses, followed by the conditional 
+statements in braces. Notice that the parentheses around the logical expression are 
+required, although they are not required in the single statement branching described in 
+the preceding section. </p>
+
+<p>The following example is somewhat similar to C's if syntax: </p>
+
+<blockquote>
+  <pre>
+
+if ( ( $total += $value ) &gt; $limit )  {
+
+   print LOGFILE &quot;Maximum limit $limit exceeded. Offending value was $value.\n&quot;;
+
+   close (LOGFILE);
+
+  die &quot;Too many! Check the log file for details.\n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>The <tt>if</tt> statement is capable of a little more complexity, with <tt>else</tt> 
+and <tt>elsif</tt> operators, as in the following example: </p>
+
+<blockquote>
+  <pre>
+
+if ( !open( LOGFILE, &quot;install.log&quot;) )   {
+
+   close ( INFILE );
+
+   die &quot;Unable to open log file!\n&quot;;
+
+   }
+
+elsif ( !open( CFGFILE, &quot;&gt;system.cfg&quot;) )  {
+
+   print LOGFILE &quot;Error during install: Unable to open config file for writing.\n&quot;;
+
+   close ( LOGFILE );
+
+   die &quot;Unable to open config file for writing!\n&quot;;
+
+   }
+
+else  {
+
+   print CFGFILE &quot;Your settings go here!\n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<h3><a NAME="Loops">Loops</a></h3>
+
+<p>The loop modifiers (<tt>while, until, for</tt>, and <tt>foreach</tt>) are used with compound statements in much the same way, as the following example shows: </p>
+
+<blockquote>
+  <pre>
+
+until ( $total &gt;= 50 )  {
+
+   print &quot;Enter a value: &quot;;
+
+   $value = scalar (&lt;STDIN&gt;);
+
+   $total += $value;
+
+   print &quot;Current total is $total\n&quot;;
+
+   }
+
+print &quot;Enough!\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>The <tt>while</tt> and <tt>until</tt> statements are described in &quot;Conditional Expressions&quot; earlier in this chapter. The <tt>for</tt> statement resembles the one in C. <tt>for</tt> is followed by an initial value, a termination condition, and an iteration expression, all enclosed in parentheses and separated by semicolons, as follows: </p>
+
+<blockquote>
+  <pre>
+
+for ( $count = 0; $count &lt; 100; $count++ )  {
+
+   print &quot;Something&quot;;
+
+   }
+
+</pre>
+</blockquote>
+<p>The <tt>foreach</tt> operator is special; it iterates over the contents of an array and executes the statements in a statement block for each element of the array. Following is a simple example: </p>
+
+<blockquote>
+  <pre>
+
+@numbers = (&quot;one&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;);
+
+foreach $num ( @numbers )   {
+
+   print &quot;Number $num   \n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>The variable <tt>$num</tt> first takes on the value <tt>one</tt>, then <tt>two</tt>, and so on. That example looks fairly trivial, but the real power of this operator lies in the fact that it can operate on any array, as follows: </p>
+
+<blockquote>
+  <pre>
+
+foreach $arg ( @ARGV )   {
+
+   print &quot;Argument: \&quot;$arg\&quot;.\n&quot;;
+
+   }
+
+foreach $namekey ( sort keys %surnames )  {
+
+   print REPORT &quot;Surname: $value{$namekey}.\n&quot;,
+
+                &quot;Address: $address{$namekey}.\n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<h3><a NAME="Labels">Labels</a></h3>
+
+<p>You can use labels with the <tt>next, last</tt>, and <tt>redo</tt> statements to provide more control of program flow through loops. A label consists of any word, usually in uppercase, followed by a colon. The label appears just before the loop operator (<tt>while, for</tt>, or <tt>foreach</tt>) and can be used as an anchor for jumping to from within the block. The following code snippet prints all the odd-numbered records in INFILE: </p>
+
+<blockquote>
+  <pre>
+
+RECORD:  while ( &lt;INFILE&gt; )  {
+
+   $even = !$even;
+
+   next RECORD if $even;
+
+   print;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>The three label-control statements are: 
+
+<ul>
+  <li><tt>next</tt>. Jumps to the next iteration of the loop marked by the label or to the 
+    innermost enclosing loop, if no label is specified. </li>
+  <li><tt>last</tt>. Immediately breaks out of the loop marked by the label or out of the 
+    innermost enclosing loop, if no label is specified. </li>
+  <li><tt>redo</tt>. Jumps back to the loop marked by the specified label or to the innermost 
+    enclosing loop, if no label is specified. <tt>redo</tt> causes the loop to execute again 
+    with the same iterator value. </li>
+</ul>
+
+<h3><a NAME="Subroutines">Subroutines</a></h3>
+
+<p>Subroutines in Perl are defined with the <tt>sub</tt> keyword, as follows: </p>
+
+<blockquote>
+  <pre>
+
+sub Usage {
+
+   print &quot;Usage: \n&quot;,
+
+         &quot;twiddle [-args] infile outfile\n&quot;;
+
+   print &quot;Copyleft 1996, Jonathan F. Squirmsby.&quot;;
+
+ }
+
+</pre>
+</blockquote>
+
+<p>Subroutines are called with <tt>&amp;</tt>, as follows: </p>
+
+<blockquote>
+  <pre>
+
+sub bust  {
+
+   print &quot;Oops, some kind of error seems to have occurred.\n&quot;;
+
+   die &quot;Fatal error, terminating.\n&quot;;
+
+   }
+
+open ( LOGFILE, &quot;&gt;install.log&quot;) || &amp;bust;
+
+</pre>
+</blockquote>
+
+<p>In this example, the subroutine was defined before it was called. You can define and 
+call subroutines in any order in Perl; the convention is to define them after the main 
+routine. </p>
+
+<p><b>Passing Arguments&nbsp;&nbsp;</b>You can pass arguments to a subroutine in the usual 
+way, as follows: </p>
+
+<blockquote>
+  <pre>
+
+open ( LOGFILE, &quot;&gt;install.log&quot;) || &amp;bust(&quot;Failed to open log file \&quot;install.log\&quot;.&quot;);
+
+</pre>
+</blockquote>
+
+<p>But here is where Perl's subroutine syntax starts to get a little strange; C 
+programmers may want to take a seat before reading on. </p>
+
+<p>All Perl subroutines receive their arguments as an arbitrarily long array of scalars 
+with the special name of <tt>@_</tt>. There is no mechanism for declaring the arguments 
+when the subroutine is declared. There is no fixed number of arguments. Also, the calling 
+function can pass any mixture of scalars and arrays; they are all treated as one big <tt>@_</tt> 
+array when they get to the subroutine. </p>
+
+<p>In the example earlier in this section, in which <tt>bust</tt> is called with a single 
+argument, you can pick it up in the subroutine and use it to provide a more sensible error 
+message, as in the following example: </p>
+
+<blockquote>
+  <pre>
+
+sub bust  {
+
+   ($errortext) = @_;
+
+   print &quot;Oops, an error occurred ($errortext).\n&quot;;
+
+   die &quot;Fatal error, terminating.\n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>Notice that we went to the trouble of assigning the scalar <tt>$errortext</tt> to the 
+argument array <tt>@_</tt>. This assignment may seem to be unnecessary; in fact, we could 
+have simply used <tt>@_</tt> instead of <tt>$errortext</tt> in the <tt>print</tt> 
+statement. Explicitly assigning variables to the contents of the <tt>@_</tt> array is much 
+clearer, though, especially when the subroutine takes multiple arguments. Compare the 
+example </p>
+
+<blockquote>
+  <pre>
+
+print &quot;Error $_[0] opening file $_[1].\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>with this one: </p>
+
+<blockquote>
+  <pre>
+
+($errfile, $errtext) = @_;
+
+print &quot;Error $errtext opening file $errfile.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>Notice, too, that when we assigned the single value <tt>$errortext</tt> to the <tt>@_</tt> 
+array in the <tt>bust</tt> example, we placed it in parentheses. We did so to force an 
+array context, so that what gets assigned to <tt>$errortext</tt> is the first (and only) 
+value of the <tt>@_</tt> array, not the number of values in <tt>@_</tt>. In effect, we're 
+telling Perl to treat <tt>$errortext</tt> as a single-element array. The earlier example 
+that uses <tt>$errfile</tt> and <tt>$errtext</tt> is a clearer example of an 
+array-to-array assignment. </p>
+
+<p>In &quot;Variable Scope&quot; later in this chapter, you learn how to protect local 
+variables such as <tt>$errortext</tt> in subroutines by using the <tt>local</tt> and <tt>my</tt> 
+keywords. </p>
+
+<p><b>Passing Arrays&nbsp;&nbsp;</b>Perl's grouping of all subroutine arguments makes it 
+impossible to pass more than one array to a Perl subroutine. Suppose that you have a 
+subroutine call of the following form: </p>
+
+<blockquote>
+  <pre>
+
+&amp;PrintRes( &quot;alpha&quot;, (1, 3, 5, 7), &quot;beta&quot;, (2, 4, 6, 8) );
+
+</pre>
+</blockquote>
+
+<p>Try to unpack these arguments into the following values as they come into the 
+subroutine: </p>
+
+<blockquote>
+  <pre>
+
+$p1 = &quot;alpha&quot;;
+
+@p2 = (1, 3, 5, 7);
+
+$p3 = &quot;beta&quot;;
+
+@p4 = (2, 4, 6, 8);
+
+</pre>
+</blockquote>
+
+<p>A statement like </p>
+
+<blockquote>
+  <pre>
+
+( $p1, @p2, $p3, @p4 ) = @_;
+
+</pre>
+</blockquote>
+
+<p>won't get beyond the second parameter. The following list explains what happens: 
+
+<ol>
+  <li>The first variable in the list, <tt>$p1</tt>, is assigned the value of the first scalar 
+    in the <tt>@_</tt> argument array, which is <tt>alpha</tt>. </li>
+  <li>Then the next variable in the list, <tt>@p2</tt>, is assigned the value of the next 
+    argument in the <tt>@_</tt> argument array. This is an array assignment because <tt>@p2</tt> 
+    is an array, so the entire <tt>@_</tt> array, from its second element on, is assigned to <tt>@p2</tt>-<tt>(1, 
+    3, 5, 7, &quot;beta&quot;, 2, 4, 6, 8)</tt>, in other words. </li>
+  <li>The next variable to be assigned is <tt>$p3</tt>. This variable is assigned the value of 
+    the next element in the <tt>@_</tt> argument array-but there aren't any left, because 
+    they've all been slurped by <tt>@p2</tt>. <tt>$p3</tt>, therefore, is null. </li>
+  <li>The final variable, <tt>@p4</tt>, suffers the same fate and is also null. </li>
+</ol>
+
+<p>There's no point in trying to specify subarrays, as in the following example, because 
+Perl expands the array on the left to the same thing as before: </p>
+
+<blockquote>
+  <pre>
+
+( $p1, (@p2), $p3, (@p4) ) = @_;
+
+</pre>
+</blockquote>
+
+<p>The moral of the story is: Don't pass more than one array into a subroutine. And if you 
+do pass an array, make sure that it's the last argument. </p>
+
+<p><b>Returning Values</b>&nbsp;&nbsp;Perl is just as casual about returning values from 
+subroutines as it is about passing arguments to them. A subroutine returns a single value: 
+the value of the last assign-ment made in the subroutine. If you pass (<tt>4</tt>, <tt>3</tt>) 
+to this subroutine, the value <tt>7 </tt>is returned: </p>
+
+<blockquote>
+  <pre>
+
+sub AddIt  {
+
+   ( $a, $b ) = @_;
+
+   $a + $b;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>That means that the value <tt>7</tt> is substituted for the subroutine call after 
+evaluation. The code </p>
+
+<blockquote>
+  <pre>
+
+print &quot;Summing 4 and 3 yields &quot;, &amp;AddIt(4, 3), &quot;.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>prints the following: </p>
+
+<blockquote>
+  <pre>
+
+Summing 4 and 3 yields 7.
+
+</pre>
+</blockquote>
+
+<p>Notice that we had to keep the subroutine call outside the quotes to allow Perl to 
+recognize <tt>&amp;</tt> as a subroutine invocation. </p>
+
+<p>It isn't always clear which statement is the last to be executed in a subroutine, 
+particularly if it contains loops or conditional statements. One way to ensure that the 
+correct value is returned is to place a reference to the variable on a line by itself at 
+the end of the subroutine, as follows: </p>
+
+<blockquote>
+  <pre>
+
+sub Maybe  {
+
+   # Various loops and conditionals here which set the value of &quot;$result&quot;   
+
+   $result;
+
+   }
+
+
+</pre>
+</blockquote>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td><b>CAUTION</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td><blockquote>
+      <p>Take care not to add seemingly innocuous statements near the end of a subroutine. A <tt>print</tt> 
+      statement returns a value of 1 (if successful) for example, so a subroutine that prints 
+      something just before it returns always returns 1. </p>
+    </blockquote>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p>The return value can be a scalar, an array, or an associative array. Listing 1.1 shows 
+a complete example in which a subroutine builds an associative array of names keyed by 
+initials and then returns the associative array. The keys of this array-the initials-are 
+then printed in sorted order. Take your time reading through this example; a lot is going 
+on in there, but it's comprehensively commented. </p>
+
+<hr>
+
+<blockquote>
+  <b><p>Listing 1.1&nbsp;&nbsp;INITIALS.PL: Returning an Associative Array from a Subroutine<br>
+  </b></p>
+</blockquote>
+
+<blockquote>
+  <pre>
+
+#!/usr/local/bin/perl -w
+
+
+
+# Pass the names into the subroutine.
+
+# Store the results in an associative array called &quot;keyedNames&quot;.
+
+%keyedNames = &amp;GetInitials(&quot;Jane Austen&quot;, &quot;Emily Bronte&quot;, &quot;Mary Shelley&quot; );
+
+
+
+# Print out the initials, sorted:
+
+print &quot;Initials are &quot;, join(', ', sort keys %keyedNames), &quot;.\n&quot;;
+
+
+
+# The GetInitials subroutine.
+
+sub GetInitials  {
+
+
+
+   # Let's store the arguments in a &quot;names&quot; array for clarity.
+
+   @names = @_;
+
+
+
+   # Process each name in turn:
+
+   foreach $name ( @names )  {
+
+
+
+      # The &quot;split&quot; function is explained in Chapter 15, &quot;Function List&quot;.
+
+      # In this statement, we're getting split to look for the ' ' in the name;
+
+      # It returns an array of chunks of the original string (i.e. $name) which were
+
+      # separated by spaces, i.e. the forename and surname respectively in our case.
+
+      # The variables &quot;$forename&quot; and &quot;$surname&quot; are then assigned to this array
+
+      # using parentheses to force an array assignment.
+
+      ( $forename, $surname ) = split( ' ', $name );
+
+
+
+      # OK, now we have the forename and surname. We use the &quot;substr&quot; function,
+
+      # also explained in chapter 15, to extract the first character from each 
+
+of these.
+
+      # The &quot;.&quot; operator concatenates two strings (for example, &quot;aa&quot;.&quot;bb&quot; is &quot;aabb&quot;)
+
+      # so the variable &quot;$inits&quot; takes on the value of the initials of the name:
+
+      $inits = substr( $forename, 0, 1 ) . substr( $surname, 0, 1 );
+
+
+
+      # Now we store the name in an associative array using the initials as the key:
+
+      $NamesByInitials{$inits} = $name;
+
+      }
+
+
+
+   # Having built the associative array, we simply refer to it at the end of the
+
+   # subroutine so that it's value is the last thing evaluated here. It will then 
+
+   # be passed back to the calling function.
+
+   %NamesByInitials;
+
+   }
+
+</pre>
+</blockquote>
+
+<hr>
+
+<h3><a NAME="VariableScope">Variable Scope</a></h3>
+
+<p>Perl uses separate name spaces to store scalars, arrays, associative arrays, and so on. 
+As a result, you can use the same name for variables of different types without fear of 
+confusion (at least on Perl's part; for your own sake, use unique names).<tt> </tt>This 
+example uses three different kinds of variables, each called <tt>name</tt>: </p>
+
+<blockquote>
+  <pre>
+
+$name = &quot;Dana&quot;;
+
+@name = (&quot;Donna&quot;, &quot;Dana&quot;, &quot;Diana&quot;);
+
+%name = (&quot;Donna&quot;, &quot;Elephants&quot;, &quot;Dana&quot;, &quot;Finches&quot;, &quot;Diana&quot;, &quot;Parakeets&quot;);
+
+print &quot;I said $name{$name}, not $name{$name[0]}!\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>The bad news is that by default, Perl uses just one name space for each data type, for 
+all functions. So if you have a variable called <tt>$temp</tt> in the main function, and 
+you call a routine that uses another variable called <tt>$temp</tt>, the value of <tt>$temp</tt> 
+in the main function gets clobbered. The references to the two variables are in fact two 
+references to the same variable, as far as Perl is concerned. </p>
+
+<p>That's where the <tt>local</tt> (Perl 4 and 5) and <tt>my</tt> (Perl 5 only) functions 
+come in. These functions force Perl to treat variables as though they are local to the 
+current code block, whether that block is a loop, an if-block, or a subroutine. </p>
+
+<p>The following example uses two variables called <tt>$temp</tt> (one outside and one 
+inside a <tt>while</tt> loop): </p>
+
+<blockquote>
+  <pre>
+
+$temp = &quot;Still here!\n&quot;;
+
+print &quot;Enter a few words at a time, Ctrl+D to terminate:\n&quot;;
+
+while (&lt;&gt;)  {
+
+   local( $temp, @etc ) = split(' ', $_ );
+
+   print &quot;You said $temp&quot;;
+
+   @etc &amp;&amp; print &quot; and then you said @etc&quot;;
+
+   print &quot;.  Enter some more, or press Ctrl+D to end:\n&quot;;
+
+   }
+
+print $temp;
+
+</pre>
+</blockquote>
+
+<p>The difference between Perl 4's <tt>local()</tt> and Perl 5's <tt>my()</tt> is that <tt>local</tt> 
+variables are local to the current package, whereas <tt>my</tt> variables are <i>really</i> 
+local. </p>
+
+<h2><a NAME="Patterns"><font SIZE="5" COLOR="#FF0000">Patterns</font></a></h2>
+
+<p>We'll finish this overview of Perl by discussing its pattern-matching capabilities. The 
+capability to match and replace patterns is vital to any scripting language that claims to 
+be capable of useful text manipulation. By this stage, you probably won't be surprised to 
+read that Perl matches patterns better than any other general-purpose language does. Perl 
+4's pattern matching is excellent, but Perl 5 introduces some significant improvements, 
+including the capability to match on even more arbitrary strings than before. </p>
+
+<p>The basic pattern-matching operations discussed in this section are: 
+
+<ul>
+  <li><i>Matching</i>, in which we want to know whether a particular string matches a pattern </li>
+  <li><i>Substitution</i>, in which we want to replace portions of a string based on a pattern 
+  </li>
+</ul>
+
+<p>The patterns referred to here are more properly known as regular expressions, and we'll 
+start by looking at them. </p>
+
+<h3><a NAME="RegularExpressions">Regular Expressions</a></h3>
+
+<p>A <i>regular expression</i> is a set of rules that describes a generalized string. If 
+the characters that make up a particular string conform to the rules of a particular 
+regular expression, the regular expression is said to <i>match</i> that string. </p>
+
+<p>A few concrete examples usually help after an overblown definition like that one. The 
+regular expression b. matches the strings bovine, above, Bobby, and Bob Jones, but not the 
+strings Bell, b, or Bob. That's because the expression insists that the letter <i>b</i> 
+(lowercase) must be in the string and must be followed immediately by another character. </p>
+
+<p>The regular expression b+, on the other hand, requires the lowercase letter <i>b</i> at 
+least once. This expression matches b and Bob in addition to the example matches for b. in 
+the preceding paragraph. The regular expression b* requires zero or more <i>b</i>s, so it 
+matches any string. That seems to be fairly useless, but it makes more sense as part of a 
+larger regular expression. Bob*y, for example, matches all of Boy, Boby, and Bobby but not 
+Boboby. </p>
+
+<p><b>Assertions&nbsp;</b>&nbsp;Several so-called assertions are used to anchor parts of 
+the pattern to word or string boundaries. The <tt>^ </tt>assertion matches the start of a 
+string, so the regular expression <tt>^fool </tt>matches <tt>fool </tt>and <tt>foolhardy </tt>but 
+not <tt>tomfoolery </tt>or <tt>April fool</tt>. Table 1.5 lists the assertions.<br>
+</p>
+
+<p align="center"><b>Table 1.5&nbsp;&nbsp;Perl's Regular-Expression Assertions</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="85"><p align="center"><b>Assertion</b></td>
+    <td WIDTH="144"><b>Matches</b> </td>
+    <td WIDTH="116"><b>Example</b></td>
+    <td WIDTH="116"><b>Matches</b> </td>
+    <td WIDTH="116"><b>Doesn't Match</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="85"><p align="center"><tt>^</tt></td>
+    <td WIDTH="144">Start of string </td>
+    <td WIDTH="116"><tt>^fool</tt></td>
+    <td WIDTH="116"><tt>foolish</tt> </td>
+    <td WIDTH="116"><tt>tomfoolery</tt> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="85"><p align="center"><tt>$</tt></td>
+    <td WIDTH="144">End of string </td>
+    <td WIDTH="116"><tt>fool$</tt></td>
+    <td WIDTH="116"><tt>April fool</tt> </td>
+    <td WIDTH="116"><tt>foolish</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="85"><p align="center"><tt>\b</tt></td>
+    <td WIDTH="144">Word boundary </td>
+    <td WIDTH="116"><tt>be\bside</tt></td>
+    <td WIDTH="116"><tt>be side</tt> </td>
+    <td WIDTH="116"><tt>beside</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="85"><p align="center"><tt>\B</tt></td>
+    <td WIDTH="144">Nonword boundary </td>
+    <td WIDTH="116"><tt>be\Bside</tt></td>
+    <td WIDTH="116"><tt>beside</tt> </td>
+    <td WIDTH="116"><tt>be side</tt></td>
+  </tr>
+</table>
+</center></div>
+
+<p><b>Atoms&nbsp;&nbsp;</b>The . (period) that you saw in b. earlier in this chapter is an 
+example of a regular-expression atom. <i>Atoms</i> are, as the name suggests, the 
+fundamental building blocks of a regular expression. A full list of atoms appears in Table 
+1.6. <br>
+</p>
+
+<p align="center"><b>Table 1.6&nbsp;&nbsp;Perl's Regular-Expression Atoms</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="103"><b>Atom</b></td>
+    <td WIDTH="126"><b>Matches</b> </td>
+    <td WIDTH="114"><b>Example</b></td>
+    <td WIDTH="104"><b>Matches</b> </td>
+    <td WIDTH="119"><b>Doesn't Match</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="103">period (.)</td>
+    <td WIDTH="126">Any character except new line </td>
+    <td WIDTH="114"><tt>b.b</tt></td>
+    <td WIDTH="104"><tt>bob</tt> </td>
+    <td WIDTH="119"><tt>bb </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="103">List of characters in brackets </td>
+    <td WIDTH="126">Any one of those characters </td>
+    <td WIDTH="114"><tt>^[Bb]</tt></td>
+    <td WIDTH="104"><tt>Bob, bob</tt> </td>
+    <td WIDTH="119"><tt>Rbob </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="103">Regular expression in parentheses</td>
+    <td WIDTH="126">Anything that regular expression matches </td>
+    <td WIDTH="114"><tt>^a(b.b)c$</tt></td>
+    <td WIDTH="104"><tt>abobc</tt> </td>
+    <td WIDTH="119"><tt>abbc </tt></td>
+  </tr>
+</table>
+</center></div>
+
+<p><b>Quantifiers&nbsp;&nbsp;</b>A <i>quantifier</i> is a modifier for an atom. It can be 
+used to specify that a particular atom must appear at least once, as in b+. The atom 
+quantifiers are listed in Table 1.7.<br>
+</p>
+
+<p align="center"><b>Table 1.7&nbsp;&nbsp;Perl's Regular-Expression Atom Quantifiers</b> </p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><b>Quantifier</b></td>
+    <td WIDTH="250"><b>Matches</b> </td>
+    <td><b>Example</b></td>
+    <td><b>Matches</b> </td>
+    <td><b>Doesn't Match</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>*</tt></td>
+    <td WIDTH="250">Zero or more instances of the atom </td>
+    <td><tt>ab*c</tt></td>
+    <td><tt>ac, abc</tt> </td>
+    <td><tt>abb </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>+</tt></td>
+    <td WIDTH="250">One or more instances of the atom </td>
+    <td><tt>ab+c</tt></td>
+    <td><tt>abc</tt> </td>
+    <td><tt>ac </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>?</tt></td>
+    <td WIDTH="250">Zero or one instances of the atom </td>
+    <td><tt>ab?c</tt></td>
+    <td><tt>ac, abc</tt> </td>
+    <td><tt>abbc </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>{n}</tt></td>
+    <td WIDTH="250"><tt>n</tt> instances of the atom </td>
+    <td><tt>ab{2}c</tt></td>
+    <td><tt>abbc</tt> </td>
+    <td><tt>abbbc</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>{n,}</tt></td>
+    <td WIDTH="250">At least <tt>n </tt>instances of the atom </td>
+    <td><tt>ab{2,}c</tt></td>
+    <td><tt>abbc, abbbc</tt> </td>
+    <td><tt>abc </tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="76"><tt>{nm}</tt></td>
+    <td WIDTH="250">At least <tt>n</tt>, most <tt>m</tt> instances of the atom </td>
+    <td><tt>ab{2,3}c</tt></td>
+    <td><tt>abbc</tt> </td>
+    <td><tt>abbbbc</tt>at </td>
+  </tr>
+</table>
+</center></div>
+
+<p><b>Special Characters&nbsp;&nbsp; </b>Several special characters are denoted by 
+backslashed letters, with <tt>\n </tt>being especially familiar to C programmers, perhaps. 
+Table 1.8 lists the special characters.<br>
+</p>
+
+<p align="center"><b>Table 1.8&nbsp;&nbsp;Perl's Regular-Expression Special Characters</b> 
+</p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="80%">
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><b>Symbol</b></td>
+    <td WIDTH="198"><b>Matches</b> </td>
+    <td WIDTH="78"><p align="center"><b>Example</b></td>
+    <td WIDTH="75"><p align="center"><b>Matches</b> </td>
+    <td WIDTH="114"><p align="center"><b>Doesn't Match</b></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\d</tt></td>
+    <td WIDTH="198">Any digit </td>
+    <td WIDTH="78"><p align="center"><tt>b\dd</tt></td>
+    <td WIDTH="75"><p align="center"><tt>b4d</tt> </td>
+    <td WIDTH="114"><p align="center"><tt>bad</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\D</tt></td>
+    <td WIDTH="198">Nondigit </td>
+    <td WIDTH="78"><p align="center"><tt>b\Dd</tt></td>
+    <td WIDTH="75"><p align="center"><tt>bdd</tt> </td>
+    <td WIDTH="114"><p align="center"><tt>b4d</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\n</tt></td>
+    <td WIDTH="198">New line </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\r</tt></td>
+    <td WIDTH="198">Carriage return </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\t</tt></td>
+    <td WIDTH="198">Tab </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\f</tt></td>
+    <td WIDTH="198">Form feed </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\s</tt></td>
+    <td WIDTH="198">White-space character </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\S</tt></td>
+    <td WIDTH="198">Non-white-space character </td>
+    <td WIDTH="78"><p align="center">　</td>
+    <td WIDTH="75"><p align="center">&nbsp; </td>
+    <td WIDTH="114"><p align="center">　</td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\w</tt></td>
+    <td WIDTH="198">Alphanumeric character </td>
+    <td WIDTH="78"><p align="center"><tt>a\wb</tt></td>
+    <td WIDTH="75"><p align="center"><tt>a2b</tt> </td>
+    <td WIDTH="114"><p align="center"><tt>a^b</tt></td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="70"><p align="center"><tt>\W</tt></td>
+    <td WIDTH="198">Nonalphanumeric character </td>
+    <td WIDTH="78"><p align="center"><tt>a\Wb</tt></td>
+    <td WIDTH="75"><p align="center"><tt>aa^b</tt> </td>
+    <td WIDTH="114"><p align="center"><tt>aabb</tt></td>
+  </tr>
+</table>
+</center></div>
+
+<p><b>Backslashed Tokens&nbsp;&nbsp;</b>It is essential that regular expressions be 
+capable of using all characters, so that all possible strings that occur in the real word 
+can be matched. With so many characters having special meanings, a mechanism is required 
+that allows you to represent any arbitrary character in a regular expression. </p>
+
+<p>This mechanism is a backslash (<tt>\</tt>), followed by a numeric quantity. This 
+quantity can take any of the following formats: 
+
+<ul>
+  <li><b>Single or double digit:</b> matched quantities after a match. These matched 
+    quantities are called <i>backreferences</i> and are explained in the following section. </li>
+  <li><b>Two-or three-digit octal number:</b> the character with that number as character 
+    code, unless it's possible to interpret it as a backreference. </li>
+  <li><tt>x</tt><b>, followed by two hexadecimal digits:</b> the character with that number as 
+    its character code. <tt>\x3e</tt>, for example, is <tt>&gt;</tt>. </li>
+  <li><tt>c</tt><b>, followed by a single character:</b> the control character. <tt>\cG</tt>, 
+    for example, matches <tt>Ctrl+G</tt>. </li>
+  <li><b>Any other character:</b> the character itself. <tt>\&amp;</tt>, for example, matches 
+    the <tt>&amp;</tt> character. </li>
+</ul>
+
+<h3><a NAME="Matching">Matching</a></h3>
+
+<p>Now you're ready to start putting all that information together with some real pattern 
+matching. The match operator normally consists of two forward slashes with a regular 
+expression in between, and it normally operates on the contents of the <tt>$_</tt> 
+variable. So if <tt>$</tt>_ is <tt>serendipity</tt>, <tt>/^ser/, /end/,</tt> and <tt>/^s.*y$/</tt> 
+are all true. </p>
+
+<p><b>Matching on $_&nbsp;&nbsp;</b>The <tt>$_</tt> operator is special; see <a
+HREF="ch13.htm">Chapter 13</a>, &quot;Special Variables,&quot; for full details. In many 
+ways, <tt>$_</tt> is the default container for data that is being read in by Perl. The <tt>&lt;&gt;</tt> 
+operator, for example, gets the next line from <tt>STDIN</tt> and stores it in <tt>$_</tt>. 
+So the following code snippet allows you to type lines of text and tells you when your 
+line matches one of the regular expressions: </p>
+
+<blockquote>
+  <pre>
+
+$prompt = &quot;Enter some text or press Ctrl+D to stop: &quot;;
+
+print $prompt;
+
+while (&lt;&gt;)  {
+
+   /^[aA]/ &amp;&amp; print &quot;Starts with a or A.  &quot;;
+
+   /[0-9]$/ &amp;&amp; print &quot;Ends with a digit.  &quot;;
+
+   /perl/ &amp;&amp; print &quot;You said it!   &quot;;
+
+   print $prompt;
+
+   }
+
+</pre>
+</blockquote>
+
+<p><b>Bound Matches</b>&nbsp;&nbsp;Matching doesn't always have to operate on <tt>$_</tt>, 
+although this default behavior is quite convenient. A special operator, <tt>=~</tt>, 
+evaluates to either true or false, depending on whether its first operand matches on its 
+second operand. So <tt>$filename =~ /dat$/</tt> is true if <tt>$filename</tt> matches on <tt>/dat$/</tt>. 
+You can use <tt>=~</tt> in conditionals in the usual way, as follows: </p>
+
+<blockquote>
+  <pre>
+
+?$filename =~ /dat$/ &amp;&amp; die &quot;Can't use .dat files.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>A corresponding operator, <tt>!~</tt>, has the opposite sense. <tt>!~</tt> is true if 
+the first operator does not match on the second, as follows: </p>
+
+<blockquote>
+  <pre>
+
+$ENV{'PATH'} !~ /perl/ &amp;&amp; warn &quot;Not sure if perl is in your path   &quot;;
+
+</pre>
+</blockquote>
+
+<p><b>Alternative Delimiters</b>&nbsp;&nbsp;The match operator can use characters other 
+than <tt>//</tt>-a useful point if you're trying to match a complex expression that 
+involves forward slashes. A more general form of the match operator than <tt>//</tt> is <tt>m//</tt>. 
+If you use the leading <tt>m</tt>, you can use any character to delimit the regular 
+expression. For example, </p>
+
+<blockquote>
+  <pre>
+
+$installpath =~ m!^/usr/local! || warn &quot;The path you have chosen is odd.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>warns that &quot;The path you have chosen is <tt>odd.\n</tt>&quot; if the variable <tt>$installpath</tt> 
+starts with <tt>/usr/local</tt>. </p>
+
+<p><b>Match Options</b>&nbsp;&nbsp;You can apply several optional switches to the match 
+operator (either <tt>//</tt> or <tt>m//</tt>) to alter its behavior. These options are 
+listed in Table 1.9. <br>
+</p>
+
+<p align="center"><b>Table 1.9&nbsp;&nbsp;Perl's Match-Operator Optional Switches </b></p>
+<div align="center"><center>
+
+<table BORDERCOLOR="#000000" BORDER="1" WIDTH="50%">
+  <tr VALIGN="TOP">
+    <td WIDTH="109"><p align="center"><b>Switch</b></td>
+    <td WIDTH="419"><b>Meaning</b> </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="109"><p align="center"><tt>g</tt></td>
+    <td WIDTH="419">Perform global matching </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="109"><p align="center"><tt>i</tt></td>
+    <td WIDTH="419">Perform case-insensitive matching </td>
+  </tr>
+  <tr VALIGN="TOP">
+    <td WIDTH="109"><p align="center"><tt>o</tt></td>
+    <td WIDTH="419">Evaluate the regular expression one time only </td>
+  </tr>
+</table>
+</center></div>
+
+<p>The <tt>g</tt> switch continues matching even after the first match has been found. 
+This switch is useful when you are using backreferences to examine the matched portions of 
+a string, as described in the &quot;Backreferences&quot; section later in this chapter. </p>
+
+<p>The <tt>i</tt> switch forces a case-insensitive match. </p>
+
+<p>Finally, the <tt>o</tt> switch is used inside loops in which a great deal of pattern 
+matching is taking place. This switch tells Perl that the regular expression (the match 
+operator's operand) is to be evaluated one time only. The switch can improve efficiency 
+when the regular expression is fixed for all iterations of the loop that contains it. </p>
+
+<p><b>Backreferences&nbsp;&nbsp;</b>As we mentioned in the &quot;Backslashed Tokens&quot; 
+section earlier in this chapter, pattern matching produces quantities that are known as <i>backreferences</i>. 
+These quantities are the parts of your string in which the match succeeded. You need to 
+tell Perl to store them by surrounding the relevant parts of your regular expression with 
+parentheses, and you can refer to them after the match as <tt>\1, \2</tt>, and so on. The 
+following example determines whether the user typed three consecutive four-letter words: </p>
+
+<blockquote>
+  <pre>
+
+while (&lt;&gt;)  {
+
+   /\b(\S{4})\s(\S{4})\s(\S{4})\b/ &amp;&amp; print &quot;Gosh, you said $1 $2 $3!\n&quot;;
+
+   }
+
+</pre>
+</blockquote>
+
+<p>The first four-letter word lies between a word boundary (<tt>\b</tt>) and some white 
+space (<tt>\s</tt>), and consists of four non-white-space characters (<tt>\S</tt>). If 
+there is a match on the expression <tt>\b(\S{4})\s</tt>-if a four-letter word is found-the 
+matching substring is stored in the special variable <tt>\1</tt>, and the search 
+continues. When the search is complete, you can refer to the backreferences as <tt>$1, $2</tt>, 
+and so on. </p>
+
+<p>What if you don't know in advance how many matches to expect? Perform the match in an 
+array context; Perl returns the matches in an array. Consider this example: </p>
+
+<blockquote>
+  <pre>
+
+@hits = (&quot;Yon Yonson, Wisconsin&quot; =~ /(\won)/g);
+
+print &quot;Matched on &quot;, join(', ', @hits), &quot;.\n&quot;;
+
+</pre>
+</blockquote>
+
+<p>We'll start at the right side and work backward. The regular expression <tt>(\won)</tt> 
+means that we match any alphanumeric character followed by <tt>on</tt> and store all three 
+characters. The <tt>g</tt> option after the <tt>//</tt> operator means that we want to do 
+this for the entire string, even after we find a match. The <tt>=~</tt> operator means 
+that we carry out this operation on a given string (<tt>Yon Yonson, Wisconsin</tt>). 
+Finally, the whole thing is evaluated in an array context, so Perl returns the array of 
+matches, and we store it in the @hits array. Following is the output from this example: </p>
+
+<blockquote>
+  <pre>
+
+Matched on Yon, Yon, son, con.
+
+</pre>
+</blockquote>
+
+<h3><a NAME="Substitution">Substitution</a></h3>
+
+<p>When you get the hang of pattern matching, you'll find that substitutions are quite 
+straightforward and very powerful. The substitution operator is <tt>s///</tt>, which 
+resembles the match operator but has three rather than two slashes. Just as you can do 
+with the match operator, you can substitute any other character for the forward slashes, 
+and you can use the optional <tt>i, g</tt>, and <tt>o</tt> switches. </p>
+
+<p>The pattern to be replaced goes between the first and second delimiters, and the 
+replacement pattern goes between the second and third delimiters. This simple example 
+changes $house from henhouse to doghouse: </p>
+
+<blockquote>
+  <pre>
+
+$house = &quot;henhouse&quot;;
+
+$house  =~ s/hen/dog/;
+
+</pre>
+</blockquote>
+
+<p>Notice that it isn't possible to use the <tt>=~</tt> <tt>operator</tt> with a literal 
+string as you can when matching, because you can't modify a literal constant. Instead, 
+store the string in a variable and modify that variable. </p>
+
+<h2><a NAME="FromHere"><font SIZE="5" COLOR="#FF0000">From Here...</font></a></h2>
+
+<p>You have reached the end of your whirlwind tour of Perl. You saw how Perl's deceptively 
+simple constructs can be used to write deceptively simple programs, and you got a brief 
+look at the basic elements of the language. At minimum, you should have a clear idea of 
+how the language works, and you should know where to go for more information on Perl as 
+the need arises throughout the rest of this book. </p>
+
+<p>This book now moves on to Web matters, but look in the following places for more 
+information about Perl: 
+
+<ul>
+  <li>Refer to Part V of this book for comprehensive information on Perl special variables, 
+    operators, and built-in functions. </li>
+  <li>Also refer to Part V to learn how to use modules and libraries to compartmentalize your 
+    code for greater robustness and extensibility. </li>
+  <li>Consider buying a book that deals in detail with the Perl language. The definitive work 
+    is the &quot;Camel book,&quot; cited at the beginning of this chapter. </li>
+</ul>
+<hr>
+<p align="center">　</p>
+<hr WIDTH="100%" align="center">
+</body>
+</html>

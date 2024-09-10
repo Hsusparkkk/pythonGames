@@ -1,0 +1,28 @@
+點擊滑鼠右鍵: context_click()
+雙擊滑鼠左鍵: double_click()
+按著滑鼠左鍵不放: click_and_hold()
+放開滑鼠左鍵: release()
+拖曳到某個元素後放開: drag_and_drop(source, target)
+拖曳到某個座標後放開: drag_and_drop_by_offset(source, xoffset, yoffset)
+按下鍵盤上某個按鍵: key_down(value)
+放開鍵盤上某個按鍵: key_up(value)
+滑鼠指標從當前位置移動到某個座標: move_by_offset(xoffset, yoffset)
+滑鼠指標移動到某個元素: move_to_element(to_element)
+移動到某元素附近座標位置: move_to_element_with_offset(to_element, xoffset, yoffset)
+執行當前這個ActionChain的動作: perform()
+在元素上輸入值(ex:input): send_keys(value)
+在指定的元素上輸入值: send_keys_to_element(element, value)
+
+==
+## 設定Chrome的瀏覽器彈出時遵照的規則
+## 這串設定是防止瀏覽器上頭顯示「Chrome正受自動控制」
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-automation"])
+options.add_experimental_option('useAutomationExtension', False)
+
+## 關閉自動記住密碼的提示彈窗
+options.add_experimental_option("prefs", {"profile.password_manager_enabled": False, "credentials_enable_service": False})
+print(options)
+driver.get("")
+
+==
